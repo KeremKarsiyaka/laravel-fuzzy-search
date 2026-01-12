@@ -158,15 +158,15 @@ class FederatedSearchTest extends TestCase
         $this->assertInstanceOf(\Illuminate\Support\Collection::class, $results);
     }
 
-    public function test_empty_search_returns_collection(): void
+    public function test_empty_search_throws_exception_by_default(): void
     {
-        $results = FederatedSearch::across([User::class])
+        $this->expectException(\Ashiqfardus\LaravelFuzzySearch\Exceptions\EmptySearchTermException::class);
+
+        FederatedSearch::across([User::class])
             ->search('')
             ->searchIn(['name'])
             ->using('like')
             ->get();
-
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $results);
     }
 
     /*

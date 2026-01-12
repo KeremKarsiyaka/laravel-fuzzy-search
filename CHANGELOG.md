@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- GitHub Actions CI/CD workflow for automated testing across PHP 8.0-8.4 and Laravel 9-12
+- Code style checks workflow
+- Comprehensive issue templates (bug report, feature request, question)
+- Custom exception classes for better error handling:
+  - `EmptySearchTermException` - thrown when search term is empty
+  - `InvalidAlgorithmException` - thrown when invalid algorithm specified
+  - `InvalidConfigException` - thrown for configuration errors
+  - `SearchableColumnsNotFoundException` - thrown when no searchable columns found
+- Config presets for common use cases: `blog`, `ecommerce`, `users`, `phonetic`, `exact`
+- `preset()` method to apply predefined configurations easily
+- Enhanced debug mode with `debugScore($verbose, $logChannel)` for detailed scoring breakdown
+- `getDebugInfo()` method to inspect search configuration
+- `allow_empty_search` config option for graceful empty search handling
+- Pull request template for consistent PR submissions
+- Code of Conduct (Contributor Covenant 2.0)
+- `.gitattributes` for cleaner release archives
+
+### Changed
+- Enhanced `search()` method to validate empty search terms
+- Enhanced `using()` method to validate algorithm names
+- Improved CONTRIBUTING.md with architecture overview and detailed guidelines
+- Updated README.md with additional badges (Tests, PHP Version, Laravel Version)
+- Added documentation links to README
+
+### Documentation
+- New `docs/GETTING_STARTED.md` - comprehensive getting started guide with examples
+- New `docs/PERFORMANCE.md` - performance optimization guide with benchmarks
+- New `docs/COMPARISON.md` - detailed comparison with Laravel Scout, TNTSearch, Meilisearch, Algolia, Elasticsearch
+- Enhanced README with links to all documentation
+
 ## [1.0.0] - 2026-01-12
 
 ### Added

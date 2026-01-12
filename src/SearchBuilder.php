@@ -119,13 +119,14 @@ class SearchBuilder
      */
     public function using(string $algorithm): self
     {
-        $supportedAlgorithms = ['fuzzy', 'levenshtein', 'soundex', 'trigram', 'simple'];
+        $supportedAlgorithms = ['fuzzy', 'levenshtein', 'soundex', 'trigram', 'simple', 'like', 'similar_text', 'metaphone'];
 
         if (!in_array($algorithm, $supportedAlgorithms)) {
             throw new InvalidAlgorithmException($algorithm);
         }
 
-        $this->algorithm = $algorithm;
+        // Normalize 'like' to 'simple' for consistency
+        $this->algorithm = ($algorithm === 'like') ? 'simple' : $algorithm;
         return $this;
     }
 

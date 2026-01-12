@@ -3,8 +3,13 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ashiqfardus/laravel-fuzzy-search.svg?style=flat-square)](https://packagist.org/packages/ashiqfardus/laravel-fuzzy-search)
 [![Total Downloads](https://img.shields.io/packagist/dt/ashiqfardus/laravel-fuzzy-search.svg?style=flat-square)](https://packagist.org/packages/ashiqfardus/laravel-fuzzy-search)
 [![License](https://img.shields.io/packagist/l/ashiqfardus/laravel-fuzzy-search.svg?style=flat-square)](https://packagist.org/packages/ashiqfardus/laravel-fuzzy-search)
+[![Tests](https://github.com/ashiqfardus/laravel-fuzzy-search/workflows/Tests/badge.svg)](https://github.com/ashiqfardus/laravel-fuzzy-search/actions)
+[![PHP Version](https://img.shields.io/packagist/php-v/ashiqfardus/laravel-fuzzy-search.svg?style=flat-square)](https://packagist.org/packages/ashiqfardus/laravel-fuzzy-search)
+[![Laravel Version](https://img.shields.io/badge/Laravel-9%2B%20|%2010%20|%2011%20|%2012-FF2D20?logo=laravel)](https://laravel.com)
 
 A powerful, **zero-config** fuzzy search package for Laravel with fluent API. Works with all major databases without external services.
+
+**📚 Documentation:** [Getting Started](docs/GETTING_STARTED.md) • [Performance Guide](docs/PERFORMANCE.md) • [Comparisons](docs/COMPARISON.md)
 
 ## ✨ Features
 

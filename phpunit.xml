@@ -21,9 +21,6 @@
             <file>./tests/EloquentTraitTest.php</file>
             <file>./tests/DatabaseDriverTest.php</file>
         </testsuite>
-        <testsuite name="All">
-            <directory suffix="Test.php">./tests</directory>
-        </testsuite>
     </testsuites>
     <source>
         <include>
