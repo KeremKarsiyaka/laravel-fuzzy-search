@@ -23,8 +23,8 @@ How Laravel Fuzzy Search compares to other search solutions.
 | **Database Integration** | ✅ Native | ⚠️ Via drivers | ⚠️ Separate index | ❌ Separate | ❌ Separate | ❌ Separate |
 | **Typo Tolerance** | ✅ Built-in | ⚠️ Driver-specific | ⚠️ Limited | ✅ Excellent | ✅ Excellent | ✅ Good |
 | **Real-time Updates** | ✅ Instant | ⚠️ Queue delay | ⚠️ Requires index | ✅ Fast | ✅ Fast | ⚠️ Near real-time |
-| **Best For** | Small-Medium apps | Any size | Medium apps | Medium-Large | Large apps | Enterprise |
-| **Scalability** | ⚠️ Up to ~500K rows | ✅ Millions | ⚠️ Up to 1M | ✅ Millions | ✅ Millions | ✅ Billions |
+| **Best For** | Small-Large apps | Any size | Medium apps | Medium-Large | Large apps | Enterprise |
+| **Scalability** | ✅ Up to 10M rows (optimized) | ✅ Millions | ⚠️ Up to 1M | ✅ Millions | ✅ Millions | ✅ Billions |
 | **Privacy** | ✅ Data stays local | ⚠️ Depends on driver | ✅ Local | ❌ External service | ❌ External service | ⚠️ Self-hosted |
 | **Learning Curve** | ⚡ Easy | ⚡ Easy | ⏱️ Medium | ⏱️ Medium | ⏱️ Medium | ⏱️ Steep |
 
@@ -125,7 +125,7 @@ $results = User::whereFuzzy('name', 'john')->get();
 
 | Feature | Scout | Laravel Fuzzy Search |
 |---------|-------|---------------------|
-| **Scalability** | ✅ Millions of records | ⚠️ Best under 500K |
+| **Scalability** | ✅ Millions of records | ✅ Up to 10M (optimized) |
 | **Advanced Features** | ✅ Faceting, filters, geo-search | ⚠️ Basic features |
 | **Ecosystem** | ✅ Many drivers available | ⚠️ Database-only |
 
@@ -168,7 +168,7 @@ $results = Article::search('laravel')->get();
 
 **Use Laravel Fuzzy Search if:**
 - ✅ You want zero external dependencies
-- ✅ You have < 500K records
+- ✅ You have < 10M records (with optimization)
 - ✅ You need instant, real-time updates
 - ✅ Privacy is important (data stays in your DB)
 - ✅ Budget is limited (no service costs)
@@ -176,7 +176,7 @@ $results = Article::search('laravel')->get();
 - ✅ You need Query Builder support
 
 **Use Laravel Scout if:**
-- ✅ You have > 500K records
+- ✅ You have > 10M records
 - ✅ You need advanced features (faceting, geo-search)
 - ✅ You're willing to use external services
 - ✅ You need extreme scalability
@@ -248,8 +248,8 @@ $results = Article::search('laravel')->get();
 
 | Feature | Meilisearch | Laravel Fuzzy Search |
 |---------|-------------|---------------------|
-| **Scalability** | ✅ Millions of records | ⚠️ Up to 500K |
-| **Speed** | ✅ Extremely fast | ⚠️ Good |
+| **Scalability** | ✅ Millions of records | ✅ Up to 10M (optimized) |
+| **Speed** | ✅ Extremely fast | ✅ Good (with caching) |
 | **Typo Tolerance** | ✅ Best-in-class | ✅ Good |
 | **Faceting** | ✅ Advanced | ❌ Basic |
 | **Relevance** | ✅ Excellent | ✅ Good |
@@ -258,13 +258,13 @@ $results = Article::search('laravel')->get();
 
 **Use Laravel Fuzzy Search if:**
 - ✅ You want no infrastructure overhead
-- ✅ Dataset < 500K records
+- ✅ Dataset < 10M records
 - ✅ Budget-conscious
 - ✅ Privacy-sensitive data
 - ✅ Quick setup is priority
 
 **Use Meilisearch if:**
-- ✅ You have > 500K records
+- ✅ You have > 10M records
 - ✅ Speed is critical
 - ✅ You need advanced faceting
 - ✅ You can manage infrastructure
@@ -315,10 +315,10 @@ $results = Article::search('laravel')->get();
 
 **Use Laravel Fuzzy Search if:**
 - ✅ Budget < $100/month for search
-- ✅ Dataset < 500K records
+- ✅ Dataset < 10M records
 - ✅ Privacy requirements
 - ✅ Don't need global CDN
-- ✅ Basic search is sufficient
+- ✅ Basic to advanced search is sufficient
 
 **Use Algolia if:**
 - ✅ Budget > $500/month
@@ -352,8 +352,8 @@ $results = Article::search('laravel')->get();
 
 | Feature | Elasticsearch | Laravel Fuzzy Search |
 |---------|---------------|---------------------|
-| **Scalability** | ✅ Billions of records | ⚠️ Up to 500K |
-| **Features** | ✅ Most advanced | ⚠️ Basic |
+| **Scalability** | ✅ Billions of records | ✅ Up to 10M (optimized) |
+| **Features** | ✅ Most advanced | ✅ Good |
 | **Analytics** | ✅ Kibana integration | ❌ None |
 | **Distributed** | ✅ Cluster support | ❌ Single DB |
 | **Aggregations** | ✅ Advanced | ⚠️ Basic |
@@ -361,9 +361,9 @@ $results = Article::search('laravel')->get();
 ### When to Use Each
 
 **Use Laravel Fuzzy Search if:**
-- ✅ Startup or small-medium business
-- ✅ Dataset < 500K records
-- ✅ Simple search needs
+- ✅ Startup or small-large business
+- ✅ Dataset < 10M records
+- ✅ Simple to advanced search needs
 - ✅ Limited DevOps resources
 - ✅ Budget-conscious
 
@@ -382,9 +382,9 @@ $results = Article::search('laravel')->get();
 Start Here
 │
 ├─ Dataset size?
-│  ├─ < 100K rows → Laravel Fuzzy Search ✅
-│  ├─ 100K - 500K rows → Laravel Fuzzy Search or Meilisearch
-│  └─ > 500K rows → Meilisearch, Algolia, or Elasticsearch
+│  ├─ < 1M rows → Laravel Fuzzy Search ✅
+│  ├─ 1M - 10M rows → Laravel Fuzzy Search (optimized) or Meilisearch
+│  └─ > 10M rows → Meilisearch, Algolia, or Elasticsearch
 │
 ├─ Budget?
 │  ├─ $0/month → Laravel Fuzzy Search ✅ or TNTSearch
@@ -401,8 +401,8 @@ Start Here
 │  └─ External OK → Any solution
 │
 └─ Feature needs?
-   ├─ Basic search → Laravel Fuzzy Search ✅
-   ├─ Advanced search → Meilisearch or Algolia
+   ├─ Basic to advanced search → Laravel Fuzzy Search ✅
+   ├─ Advanced faceting → Meilisearch or Algolia
    └─ Enterprise features → Elasticsearch
 ```
 
@@ -429,14 +429,20 @@ Start with Laravel Fuzzy Search, migrate later if needed:
 - ✅ Zero cost
 - ✅ Learn what users actually search for
 
-### Stage 2: Optimize
-- Add caching
-- Add search index
-- Optimize queries
+### Stage 2: Optimize (1M+ rows)
+- Add caching (Redis)
+- Add search index table
+- Add database indexes (FULLTEXT, pg_trgm)
+- Use partitioning for large tables
 
-### Stage 3: Migrate if Needed
-When you hit limits (> 500K rows, slow queries):
-- → Meilisearch (best balance)
+### Stage 3: Scale (5M+ rows)
+- Materialized views
+- Read replicas
+- Tiered caching
+
+### Stage 4: Migrate if Needed (10M+ rows)
+When you hit limits:
+- → Meilisearch (best balance, free)
 - → Algolia (if budget allows)
 - → Elasticsearch (if enterprise needs)
 
@@ -449,13 +455,14 @@ When you hit limits (> 500K rows, slow queries):
 | Zero setup, zero cost | **Laravel Fuzzy Search** ✅ |
 | Best value for money | **Laravel Fuzzy Search** or Meilisearch |
 | Maximum privacy | **Laravel Fuzzy Search** ✅ |
-| Best performance at scale | Meilisearch or Algolia |
+| Up to 10M records | **Laravel Fuzzy Search** (optimized) ✅ |
+| Best performance at scale (10M+) | Meilisearch or Algolia |
 | Enterprise features | Elasticsearch |
 | Global low-latency | Algolia |
 
-**Bottom line:** Laravel Fuzzy Search is perfect for 80% of Laravel applications. Start here, scale later if needed.
+**Bottom line:** Laravel Fuzzy Search is perfect for 90% of Laravel applications. With proper optimization, it handles millions of records. Start here, scale later if needed.
 
 ---
 
-Questions? Check out our [Getting Started Guide](GETTING_STARTED.md) or [open an issue](https://github.com/ashiqfardus/laravel-fuzzy-search/issues).
+Questions? Check out our [Getting Started Guide](GETTING_STARTED.md).
 

@@ -3,7 +3,6 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ashiqfardus/laravel-fuzzy-search.svg?style=flat-square)](https://packagist.org/packages/ashiqfardus/laravel-fuzzy-search)
 [![Total Downloads](https://img.shields.io/packagist/dt/ashiqfardus/laravel-fuzzy-search.svg?style=flat-square)](https://packagist.org/packages/ashiqfardus/laravel-fuzzy-search)
 [![License](https://img.shields.io/packagist/l/ashiqfardus/laravel-fuzzy-search.svg?style=flat-square)](https://packagist.org/packages/ashiqfardus/laravel-fuzzy-search)
-[![Tests](https://github.com/ashiqfardus/laravel-fuzzy-search/workflows/Tests/badge.svg)](https://github.com/ashiqfardus/laravel-fuzzy-search/actions)
 [![PHP Version](https://img.shields.io/packagist/php-v/ashiqfardus/laravel-fuzzy-search.svg?style=flat-square)](https://packagist.org/packages/ashiqfardus/laravel-fuzzy-search)
 [![Laravel Version](https://img.shields.io/badge/Laravel-9%2B%20|%2010%20|%2011%20|%2012-FF2D20?logo=laravel)](https://laravel.com)
 
@@ -666,32 +665,139 @@ return [
 
 ### Config Presets
 
-Use predefined configurations for common use cases:
+Presets are **predefined search configurations** for common use cases. Instead of manually configuring multiple options every time, use a single preset name.
+
+#### Why Use Presets?
+
+**Without preset (verbose):**
+```php
+Post::search('laravel')
+    ->searchIn(['title' => 10, 'body' => 5, 'excerpt' => 3])
+    ->using('fuzzy')
+    ->typoTolerance(2)
+    ->ignoreStopWords('en')
+    ->accentInsensitive()
+    ->get();
+```
+
+**With preset (clean):**
+```php
+Post::search('laravel')->preset('blog')->get();
+```
+
+#### Available Presets
+
+| Preset | Best For | Algorithm | Typo Tolerance | Features |
+|--------|----------|-----------|----------------|----------|
+| `blog` | Blog posts, articles | fuzzy | 2 | Stop words, accent-insensitive |
+| `ecommerce` | Product search | fuzzy | 1 | Partial match, no stop words |
+| `users` | User/contact search | levenshtein | 2 | Accent-insensitive |
+| `phonetic` | Name pronunciation | soundex | 0 | Phonetic matching |
+| `exact` | SKUs, codes, IDs | simple | 0 | Partial match only |
+
+#### Preset Configuration Reference
 
 ```php
-// Use a preset instead of configuring everything manually
+// config/fuzzy-search.php
+'presets' => [
+    'blog' => [
+        'columns' => ['title' => 10, 'body' => 5, 'excerpt' => 3],
+        'algorithm' => 'fuzzy',
+        'typo_tolerance' => 2,
+        'stop_words_enabled' => true,
+        'accent_insensitive' => true,
+    ],
+    
+    'ecommerce' => [
+        'columns' => ['name' => 10, 'description' => 5, 'sku' => 8, 'brand' => 6],
+        'algorithm' => 'fuzzy',
+        'typo_tolerance' => 1,
+        'partial_match' => true,
+        'stop_words_enabled' => false,
+    ],
+    
+    'users' => [
+        'columns' => ['name' => 10, 'email' => 8, 'username' => 9],
+        'algorithm' => 'levenshtein',
+        'typo_tolerance' => 2,
+        'accent_insensitive' => true,
+    ],
+    
+    'phonetic' => [
+        'columns' => ['name' => 10],
+        'algorithm' => 'soundex',
+        'typo_tolerance' => 0,
+    ],
+    
+    'exact' => [
+        'algorithm' => 'simple',
+        'typo_tolerance' => 0,
+        'partial_match' => true,
+    ],
+],
+```
+
+#### Using Presets
+
+```php
+// Use a preset
 User::search('john')->preset('users')->get();
 Post::search('laravel')->preset('blog')->get();
 Product::search('laptop')->preset('ecommerce')->get();
+
+// Phonetic search for names
+Contact::search('steven')->preset('phonetic')->get();  // Finds "Stephen"
+
+// Exact search for SKUs
+Product::search('SKU-12345')->preset('exact')->get();
 ```
 
-**Available Presets:**
+#### Override Preset Settings
 
-| Preset | Best For | Features |
-|--------|----------|----------|
-| `blog` | Blog posts, articles | title/body/excerpt weights, typo tolerance, stop words, accent-insensitive |
-| `ecommerce` | Product search | name/description/sku/brand, partial match, no stop words |
-| `users` | User search | name/email/username, levenshtein algorithm, accent-insensitive |
-| `phonetic` | Name pronunciation | soundex algorithm for similar-sounding names |
-| `exact` | Strict matching | simple LIKE, partial match, no typo tolerance |
+Presets can be combined with other methods - later calls override preset values:
 
-**Presets can be overridden:**
 ```php
-// Use preset but override specific settings
+// Use blog preset but with higher typo tolerance
 Post::search('laravel')
     ->preset('blog')
-    ->typoTolerance(3)  // Override preset's default
+    ->typoTolerance(3)  // Override preset's default of 2
     ->get();
+
+// Use ecommerce preset but search different columns
+Product::search('laptop')
+    ->preset('ecommerce')
+    ->searchIn(['name' => 10, 'category' => 5])  // Override columns
+    ->get();
+```
+
+#### Create Custom Presets
+
+Add your own presets in `config/fuzzy-search.php`:
+
+```php
+'presets' => [
+    // ... existing presets ...
+    
+    'documents' => [
+        'columns' => ['title' => 10, 'content' => 8, 'tags' => 5],
+        'algorithm' => 'trigram',
+        'typo_tolerance' => 2,
+        'stop_words_enabled' => true,
+        'locale' => 'en',
+    ],
+    
+    'multilingual' => [
+        'columns' => ['title' => 10, 'body' => 5],
+        'algorithm' => 'fuzzy',
+        'accent_insensitive' => true,
+        'unicode_normalize' => true,
+    ],
+],
+```
+
+Then use your custom preset:
+```php
+Document::search('report')->preset('documents')->get();
 ```
 
 ### Per-Model Customization

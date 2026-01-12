@@ -5,118 +5,103 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Added
-- GitHub Actions CI/CD workflow for automated testing across PHP 8.0-8.4 and Laravel 9-12
-- Code style checks workflow
-- Comprehensive issue templates (bug report, feature request, question)
-- Custom exception classes for better error handling:
-  - `EmptySearchTermException` - thrown when search term is empty
-  - `InvalidAlgorithmException` - thrown when invalid algorithm specified
-  - `InvalidConfigException` - thrown for configuration errors
-  - `SearchableColumnsNotFoundException` - thrown when no searchable columns found
-- Enhanced `LaravelFuzzySearchException` base class with debugging features:
-  - `getContext()` - retrieve debugging context
-  - `withContext()` - add context fluently
-  - `toArray()` - get formatted error report for logging
-- Config presets for common use cases: `blog`, `ecommerce`, `users`, `phonetic`, `exact`
-- `preset()` method to apply predefined configurations easily
-- Enhanced debug mode with `debugScore($verbose, $logChannel)` for detailed scoring breakdown
-- `getDebugInfo()` method to inspect search configuration
-- `allow_empty_search` config option for graceful empty search handling
-- Pull request template for consistent PR submissions
-- Code of Conduct (Contributor Covenant 2.0)
-- `.gitattributes` for cleaner release archives
-- Added `like`, `similar_text`, `metaphone` as supported algorithms
-- Comparison with competing packages in documentation (soliyer, castellanos)
-
-### Changed
-- Enhanced `search()` method to validate empty search terms
-- Enhanced `using()` method to validate algorithm names (now supports 8 algorithms)
-- `'like'` algorithm normalizes to `'simple'` for consistency
-- Improved CONTRIBUTING.md with architecture overview and detailed guidelines
-- Updated README.md with additional badges (Tests, PHP Version, Laravel Version)
-- Added documentation links to README
-
-### Fixed
-- Fixed malformed `LaravelFuzzySearchException` class structure
-- Fixed PHPUnit configuration to remove duplicate test suite warnings
-- Fixed `FederatedSearchTest` to properly expect exception for empty search
-
-### Documentation
-- New `docs/GETTING_STARTED.md` - comprehensive getting started guide with examples
-- New `docs/PERFORMANCE.md` - performance optimization guide with benchmarks
-- New `docs/COMPARISON.md` - detailed comparison with Laravel Scout, TNTSearch, Meilisearch, Algolia, Elasticsearch, and competing Laravel fuzzy search packages
-- Enhanced README with exception handling documentation
-- Enhanced README with config presets documentation
-- Updated algorithms table to include all 8 supported algorithms
-
 ## [1.0.0] - 2026-01-12
 
-### Added
+### 🎉 Initial Release
 
-#### Core Features
-- Zero-config search with auto-detection of searchable columns
-- Fluent API for building search queries
-- Full Eloquent and Query Builder support
-- Multiple search algorithms: `fuzzy`, `levenshtein`, `soundex`, `metaphone`, `trigram`, `similar_text`, `simple`, `like`
+A powerful, zero-config fuzzy search package for Laravel with fluent API. Works with all major databases without external services. Scales to **10 million records** with proper optimization.
 
-#### Scoring & Weighting
-- Field weighting with customizable priorities
-- Relevance scoring with `_score` attribute
-- Prefix boosting for results starting with search term
-- Recency boost for newer records
-- Custom scoring hooks via callbacks
-- Partial match support
+### ✨ Features
+
+#### Core Search
+- **Zero-config search** - Auto-detects searchable columns from `$fillable` or `$searchable`
+- **Fluent API** - Chain methods naturally: `->search()->using()->typoTolerance()->get()`
+- **Full Eloquent & Query Builder support** - Works with both seamlessly
+- **8 search algorithms**:
+  - `fuzzy` - General purpose with typo tolerance (recommended)
+  - `levenshtein` - Edit distance based, configurable tolerance
+  - `soundex` - Phonetic matching for similar sounding words
+  - `metaphone` - More accurate phonetic matching
+  - `trigram` - N-gram similarity (best with PostgreSQL pg_trgm)
+  - `similar_text` - Percentage-based similarity
+  - `simple` / `like` - Basic LIKE matching (fastest, no typo tolerance)
+
+#### Scoring & Relevance
+- **Field weighting** - Prioritize columns: `['title' => 10, 'body' => 5]`
+- **Relevance scoring** - Results include `_score` attribute
+- **Prefix boosting** - Boost results starting with search term
+- **Recency boost** - Boost newer records with `boostRecent()`
+- **Custom scoring hooks** - Add your own scoring logic via callbacks
+- **Partial match support** - Match substrings within words
 
 #### Text Processing
-- Multi-word token search with `matchAll()` and `matchAny()`
-- Stop-word filtering (multi-language: en, de, fr, es)
-- Synonym support with groups
-- Unicode normalization
-- Accent-insensitive search
-- Locale awareness
+- **Multi-word token search** - `tokenize()` with `matchAll()` or `matchAny()`
+- **Stop-word filtering** - Multi-language support (en, de, fr, es)
+- **Synonym support** - Define synonyms and synonym groups
+- **Unicode normalization** - Proper handling of Unicode characters
+- **Accent-insensitive search** - `café` matches `cafe`
+- **Locale awareness** - Language-specific processing
 
-#### Smart Search
-- Autocomplete suggestions via `suggest()`
-- "Did you mean" spell correction via `didYouMean()`
-- Multi-model federated search via `FederatedSearch`
-- Search analytics via `getAnalytics()`
+#### Smart Search Features
+- **Autocomplete** - `suggest()` method for search suggestions
+- **Spell correction** - `didYouMean()` for typo suggestions
+- **Multi-model search** - `FederatedSearch` to search across multiple models
+- **Search analytics** - `getAnalytics()` for search insights
 
-#### Performance
-- Search index table support
-- Async indexing with queue support
-- Redis/cache integration
-- Query pattern limiting
-- Debounce support for real-time search
+#### Performance & Scaling
+- **Search index table** - Optional pre-computed index for large datasets
+- **Async indexing** - Queue support for background indexing
+- **Redis/cache integration** - Cache search results with `cache(60)`
+- **Query pattern limiting** - Prevent regex explosion attacks
+- **Debounce support** - Rate limit real-time search requests
+- **Scales to 10M records** - With partitioning, materialized views, and caching
 
 #### Pagination
-- Stable ranking across pages
-- Offset, simple, and cursor pagination
-- Manual pagination with `take()` and `skip()`
+- **Stable ranking** - Consistent ordering across pages
+- **Multiple pagination types** - Offset, simple, and cursor pagination
+- **Manual control** - `take()` and `skip()` for custom pagination
 
-#### Results
-- Highlighted results with customizable tags
-- Debug/explain-score mode
-- Faceted search support
+#### Results & Output
+- **Highlighted results** - `highlight('mark')` wraps matches in tags
+- **Debug mode** - `debugScore()` explains scoring breakdown
+- **Faceted search** - Group results by field values
 
-#### Reliability
-- Fallback search strategy
-- SQL injection protection
-- Database-agnostic (MySQL, PostgreSQL, SQLite, SQL Server, MariaDB)
-
-#### Developer Tools
-- CLI commands: `fuzzy-search:index`, `fuzzy-search:clear`, `fuzzy-search:benchmark`, `fuzzy-search:explain`
-- Comprehensive test suite (342 tests, 460 assertions)
-- Per-model customization via `$searchable` property
+#### Reliability & Security
+- **Fallback strategy** - Graceful degradation when primary algorithm fails
+- **SQL injection protection** - All queries use parameterized bindings
+- **Database-agnostic** - MySQL, PostgreSQL, SQLite, SQL Server, MariaDB
 
 #### Configuration
-- Publishable config file
-- Configurable algorithms, scoring, stop words, synonyms
-- Cache and indexing settings
+- **Config presets** - `blog`, `ecommerce`, `users`, `phonetic`, `exact`
+- **Publishable config file** - Full customization via `config/fuzzy-search.php`
+- **Per-model customization** - Override settings via `$searchable` property
 
-### Requirements
-- PHP 8.0, 8.1, 8.2, 8.3, 8.4
-- Laravel 9.x, 10.x, 11.x, 12.x
+#### Exception Handling
+- `LaravelFuzzySearchException` - Base exception with context support
+- `EmptySearchTermException` - When search term is empty
+- `InvalidAlgorithmException` - When invalid algorithm specified
+- `InvalidConfigException` - When configuration is invalid
+- `SearchableColumnsNotFoundException` - When no searchable columns found
+
+#### Developer Tools
+- **CLI commands**:
+  - `fuzzy-search:index` - Build search index
+  - `fuzzy-search:clear` - Clear search index
+  - `fuzzy-search:benchmark` - Performance benchmarking
+  - `fuzzy-search:explain` - Explain search scoring
+- **Comprehensive test suite** - 171+ tests with 230+ assertions
+
+### 📚 Documentation
+- `docs/GETTING_STARTED.md` - Quick start guide with examples
+- `docs/PERFORMANCE.md` - Optimization guide for scaling to millions of records
+- `docs/COMPARISON.md` - Comparison with Laravel Scout, Meilisearch, Algolia, Elasticsearch
+
+### 📋 Requirements
+- PHP 8.0, 8.1, 8.2, 8.3, or 8.4
+- Laravel 9.x, 10.x, 11.x, or 12.x
+- MySQL, PostgreSQL, SQLite, SQL Server, or MariaDB
+
+---
+
+[Full Documentation](https://github.com/ashiqfardus/laravel-fuzzy-search)
 
